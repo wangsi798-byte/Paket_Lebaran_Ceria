@@ -1,27 +1,17 @@
 #!/bin/bash
 
-# Exit on any error
-set -e
+# Backend Deployment
+cd backend
+npm install
+vercel --prod \
+  --env MONGODB_URI=mongodb+srv://admin_paket:SFpJ5OZLR8IDTfOR@cluster0.5zrevvj.mongodb.net/?appName=Cluster0 \
+  --env JWT_SECRET=PaketLebaranCeria2024_SecureKey! \
+  --env NODE_ENV=production
 
-# Variabel
-APP_NAME="sipale"
-DOCKER_REPO="muji-docker"
+# Frontend Deployment
+cd ../frontend
+npm install
+vercel --prod \
+  --env REACT_APP_API_URL=https://paket-lebaran-backend.vercel.app/api
 
-# Build images
-echo "🏗️ Building Docker Images..."
-docker-compose build
-
-# Tag images
-echo "🏷️ Tagging Images..."
-docker tag ${APP_NAME}-backend:latest ${DOCKER_REPO}/${APP_NAME}-backend:latest
-docker tag ${APP_NAME}-frontend:latest ${DOCKER_REPO}/${APP_NAME}-frontend:latest
-
-# Push images
-echo "☁️ Pushing Images..."
-docker push ${DOCKER_REPO}/${APP_NAME}-backend:latest
-docker push ${DOCKER_REPO}/${APP_NAME}-frontend:latest
-
-# Deployment info
-echo "✅ Deployment Completed!"
-echo "Backend: http://backend.sipale.com"
-echo "Frontend: http://sipale.com"
+echo "Deployment Complete!"
