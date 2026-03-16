@@ -1,85 +1,44 @@
-# 💰 SiPaLe: Sistem Informasi Paket Lebaran
+# Paket Lebaran Ceria
 
-## 🌟 Deskripsi Proyek
-SiPaLe adalah solusi digital untuk manajemen tabungan dan distribusi paket Lebaran yang inovatif, aman, dan mudah digunakan.
+## Deployment Guide
 
-## ✨ Fitur Utama
-- 👥 Manajemen peserta multi-role
-- 💸 Setoran fleksibel
-- 🎁 Distribusi paket custom
-- 🔔 Notifikasi cerdas
-- 📊 Rekomendasi tabungan
+### Backend Deployment
+- **Platform**: Vercel
+- **Environment Variables**:
+  - `MONGODB_URI`: MongoDB connection string
+  - `JWT_SECRET`: Secret key for JWT authentication
+  - `NODE_ENV`: production
 
-## 🚀 Teknologi
-- Backend: Node.js, Express
+### Frontend Deployment
+- **Platform**: Vercel
+- **Environment Variables**:
+  - `REACT_APP_API_URL`: Backend API URL
+
+### Local Development
+1. Clone the repository
+2. Install dependencies
+   ```bash
+   cd backend && npm install
+   cd ../frontend && npm install
+   ```
+3. Set up environment variables
+4. Run development servers
+   ```bash
+   # Backend
+   cd backend
+   npm run dev
+   
+   # Frontend
+   cd frontend
+   npm start
+   ```
+
+### Production Access
+- **Backend**: https://paket-lebaran-backend.vercel.app
+- **Frontend**: https://paket-lebaran-ceria.vercel.app
+
+### Tech Stack
+- Backend: Node.js, Express, MongoDB
 - Frontend: React
-- Database: MongoDB
-- Deployment: Docker
-
-## 🔧 Prasyarat
-- Node.js 16+
-- Docker
-- MongoDB Atlas
-
-## 🛠️ Instalasi
-
-### Kloning Repositori
-```bash
-git clone https://github.com/muji-dashboard/sipale.git
-cd sipale
-```
-
-### Konfigurasi Backend
-```bash
-cd backend
-cp .env.example .env
-npm install
-npm run seed
-```
-
-### Konfigurasi Frontend
-```bash
-cd ../frontend
-npm install
-```
-
-### Jalankan Aplikasi
-```bash
-# Untuk development
-docker-compose up -d
-
-# Untuk produksi
-docker-compose -f docker-compose.production.yml up -d
-```
-
-## 📦 Fitur Lengkap
-- Autentikasi OTP
-- Manajemen stok paket
-- Pelacakan progress tabungan
-- Notifikasi multi-channel
-- Keamanan berlapis
-
-## 🔒 Keamanan
-- Enkripsi data
-- Rate limiting
-- Audit log
-- Autentikasi bertingkat
-
-## 📅 Roadmap
-- [x] Versi 1.0: Rilis Perdana
-- [ ] Integrasi pembayaran digital
-- [ ] Dukungan multi-wilayah
-- [ ] Laporan komprehensif
-
-## 👥 Kontributor
-- [Daftar Kontributor]
-
-## 📄 Lisensi
-[Informasi Lisensi]
-
-## 📞 Kontak
-- Email: support@sipale.com
-- Telegram: @sipale_support
-
-## 🙏 Terima Kasih
-Terima kasih telah memilih SiPaLe untuk kebutuhan tabungan Lebaran Anda!
+- Deployment: Vercel
+- Database: MongoDB Atlas
