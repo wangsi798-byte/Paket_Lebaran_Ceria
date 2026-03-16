@@ -4,7 +4,10 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "config": { 
+        "distDir": "build",
+        "buildCommand": "npm run build"
+      }
     }
   ],
   "routes": [
@@ -12,5 +15,10 @@
   ],
   "env": {
     "REACT_APP_API_URL": "https://paket-lebaran-backend.vercel.app/api"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_API_URL": "https://paket-lebaran-backend.vercel.app/api"
+    }
   }
 }
