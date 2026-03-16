@@ -11,6 +11,6 @@
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://your-backend-url.com/api"
+    "REACT_APP_API_URL": "https://paket-lebaran-backend.vercel.app/api"
   }
 }
