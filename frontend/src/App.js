@@ -3,7 +3,6 @@ import axios from 'axios';
 import './index.css';
 
 // API Base URL - gunakan environment variable atau fallback ke localhost
-const API_URL = process.env.REACT_APP_API_URL || '';
 
 // ============================================
 // Komponen Login - Premium Lebaran Theme
@@ -44,7 +43,7 @@ const Login = ({ onLoginSuccess }) => {
         setLoading(true);
         setMessage({ text: '', type: '' });
         try {
-            const response = await axios.post(`${API_URL}/api/auth/verifikasi-otp`, { 
+            const response = await axios.post(`/api/auth/verifikasi-otp`, { 
                 nomorHP, 
                 otp 
             });
