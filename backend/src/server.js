@@ -42,6 +42,20 @@ const connectDB = async () => {
     }
 };
 
+// Rute-rute API
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const paketRoutes = require('./routes/paketRoutes');
+const setoranRoutes = require('./routes/setoranRoutes');
+const distribusiRoutes = require('./routes/distribusiRoutes');
+
+// Gunakan Rute
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/paket', paketRoutes);
+app.use('/api/setoran', setoranRoutes);
+app.use('/api/distribusi', distribusiRoutes);
+
 // Jalankan koneksi database
 connectDB();
 

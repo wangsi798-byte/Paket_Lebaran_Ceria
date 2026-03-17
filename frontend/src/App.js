@@ -3,7 +3,7 @@ import axios from 'axios';
 import './index.css';
 
 // API Base URL - gunakan environment variable atau fallback ke localhost
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || '';
 
 // ============================================
 // Komponen Login - Premium Lebaran Theme
