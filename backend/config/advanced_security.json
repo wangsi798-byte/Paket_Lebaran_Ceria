@@ -1,0 +1,60 @@
+{
+    "authentication": {
+        "max_login_attempts": 5,
+        "lockout_duration_minutes": 15,
+        "password_complexity": {
+            "min_length": 12,
+            "require_uppercase": true,
+            "require_lowercase": true,
+            "require_numbers": true,
+            "require_symbols": true
+        }
+    },
+    "session_management": {
+        "token_expiration_hours": 24,
+        "refresh_token_expiration_days": 7,
+        "concurrent_sessions_limit": 3
+    },
+    "ip_restrictions": {
+        "allowed_countries": ["ID"],
+        "blocked_ip_ranges": [
+            "0.0.0.0/8",
+            "10.0.0.0/8",
+            "100.64.0.0/10",
+            "169.254.0.0/16"
+        ]
+    },
+    "rate_limiting": {
+        "global_request_limit": 100,
+        "sensitive_endpoint_limit": 10,
+        "window_minutes": 15
+    },
+    "audit_logging": {
+        "sensitive_actions": [
+            "login",
+            "password_change",
+            "account_registration",
+            "distribution_create",
+            "user_role_change"
+        ]
+    },
+    "advanced_protections": {
+        "cors_allowed_origins": [
+            "https://sipale.com",
+            "https://www.sipale.com",
+            "http://localhost:3000"
+        ],
+        "csp_directives": {
+            "default-src": ["'self'"],
+            "script-src": ["'self'", "'unsafe-inline'"],
+            "style-src": ["'self'", "'unsafe-inline'"],
+            "img-src": ["'self'", "data:", "https:"]
+        },
+        "security_headers": {
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff",
+            "Referrer-Policy": "strict-origin-when-cross-origin"
+        }
+    }
+}

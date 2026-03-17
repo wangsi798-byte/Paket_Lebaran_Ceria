@@ -1,0 +1,16 @@
+node_modules/
+.env
+*.log
+build/
+dist/
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+frontend/build
+backend/node_modules
+frontend/node_modules
+.vscode/
+.idea/
+*.pid
+logs/

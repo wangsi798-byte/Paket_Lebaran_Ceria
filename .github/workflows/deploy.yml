@@ -1,0 +1,69 @@
+name: Deploy SiPaLe
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    
+    - name: Backend Tests
+      run: |
+        cd backend
+        npm install
+        npm test
+    
+    - name: Frontend Tests
+      run: |
+        cd frontend
+        npm install
+        npm test
+
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Docker Login
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Build and Push Backend
+      run: |
+        cd backend
+        docker build -t sipale-backend .
+        docker tag sipale-backend muji-docker/sipale-backend:latest
+        docker push muji-docker/sipale-backend:latest
+    
+    - name: Build and Push Frontend
+      run: |
+        cd frontend
+        docker build -t sipale-frontend .
+        docker tag sipale-frontend muji-docker/sipale-frontend:latest
+        docker push muji-docker/sipale-frontend:latest
+    
+    - name: Deploy to Production
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd /path/to/sipale
+          docker-compose pull
+          docker-compose up -d

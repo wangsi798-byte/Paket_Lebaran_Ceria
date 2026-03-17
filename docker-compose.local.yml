@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=sipale_local
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/sipale_local
+      - NODE_ENV=development
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+
+  seed-data:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/sipale_local
+    depends_on:
+      - mongodb
+    command: npm run seed
+
+volumes:
+  mongodb_data:
+
+networks:
+  default:
+    driver: bridge

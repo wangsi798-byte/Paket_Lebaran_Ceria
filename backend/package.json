@@ -1,0 +1,17 @@
+{
+    "name": "sipale-backend",
+    "version": "1.0.0",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "build": "echo 'No build step needed'",
+        "vercel-build": "echo 'Vercel build completed'"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "mongoose": "^8.1.1"
+    }
+}
