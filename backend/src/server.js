@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-// Muat environment variables
 dotenv.config();
 
 const app = express();
@@ -29,20 +28,29 @@ app.get('/health', (req, res) => {
     });
 });
 
+// ===== ROUTES =====
+const authRoutes = require('./routes/authRoutes');
+const paketRoutes = require('./routes/paketRoutes');
+const userRoutes = require('./routes/userRoutes');
+const distribusiRoutes = require('./routes/distribusiRoutes');
+const setoranRoutes = require('./routes/setoranRoutes');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/paket', paketRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/distribusi', distribusiRoutes);
+app.use('/api/setoran', setoranRoutes);
+
 // Koneksi Database
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log('Koneksi MongoDB berhasil');
     } catch (error) {
         console.error('Koneksi MongoDB gagal:', error);
     }
 };
 
-// Jalankan koneksi database
 connectDB();
 
 // Export untuk Vercel
