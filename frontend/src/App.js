@@ -20,7 +20,7 @@ const Login = ({ onLoginSuccess }) => {
         setLoading(true);
         setMessage({ text: '', type: '' });
         try {
-            const response = await axios.post(`${API_URL}/api/auth/kirim-otp`, { nomorHP });
+            const response = await axios.post(`/api/auth/kirim-otp`, { nomorHP });
             if (response.data.status === 'success') {
                 setMessage({ text: response.data.message || 'OTP berhasil dikirim!', type: 'success' });
                 setStep('input-otp');
