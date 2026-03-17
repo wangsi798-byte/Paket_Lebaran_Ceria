@@ -18,28 +18,30 @@ const logger = winston.createLogger({
         winston.format.json()
     ),
     defaultMeta: { service: 'sipale-backend' },
-    transports: [
-        // File untuk error
-        new winston.transports.File({
-            filename: path.join(logDir, 'error.log'),
-            level: 'error',
-            maxsize: 5242880, // 5MB
-            maxFiles: 5
-        }),
-        // File untuk kombinasi log
-        new winston.transports.File({
-            filename: path.join(logDir, 'combined.log'),
-            maxsize: 5242880, // 5MB
-            maxFiles: 5
-        }),
-        // Console untuk development
-        new winston.transports.Console({
-            format: winston.format.combine(
-                winston.format.colorize(),
-                winston.format.simple()
-            )
-        })
-    ],
+    transports: process.env.NODE_ENV === 'production' 
+        ? [new winston.transports.Console()]
+        : [
+            // File untuk error
+            new winston.transports.File({
+                filename: path.join(logDir, 'error.log'),
+                level: 'error',
+                maxsize: 5242880, // 5MB
+                maxFiles: 5
+            }),
+            // File untuk kombinasi log
+            new winston.transports.File({
+                filename: path.join(logDir, 'combined.log'),
+                maxsize: 5242880, // 5MB
+                maxFiles: 5
+            }),
+            // Console untuk development
+            new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.colorize(),
+                    winston.format.simple()
+                )
+            })
+        ],
     exceptionHandlers: [
         new winston.transports.File({ 
             filename: path.join(logDir, 'exceptions.log') 

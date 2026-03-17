@@ -32,11 +32,18 @@ app.get('/health', (req, res) => {
 // Koneksi Database
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
+        const dbUri = process.env.MONGODB_URI;
+        const connStr = dbUri.includes('?') 
+            ? dbUri.replace('?', 'sipale?')
+            : dbUri.endsWith('/')
+                ? dbUri + 'sipale'
+                : dbUri + '/sipale';
+
+        await mongoose.connect(connStr, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
-        console.log('Koneksi MongoDB berhasil');
+        console.log('Koneksi MongoDB berhasil ke database: sipale');
     } catch (error) {
         console.error('Koneksi MongoDB gagal:', error);
     }

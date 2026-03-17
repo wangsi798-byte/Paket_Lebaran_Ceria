@@ -21,11 +21,17 @@ const Login = ({ onLoginSuccess }) => {
         setMessage({ text: '', type: '' });
         try {
             const response = await axios.post(`${API_URL}/api/auth/kirim-otp`, { nomorHP });
-            setMessage({ text: response.data.message || 'OTP berhasil dikirim!', type: 'success' });
-            setStep('input-otp');
+            if (response.data.status === 'success') {
+                setMessage({ text: response.data.message || 'OTP berhasil dikirim!', type: 'success' });
+                setStep('input-otp');
+            } else {
+                setMessage({ text: response.data.message || 'Gagal mengirim OTP.', type: 'error' });
+            }
         } catch (error) {
+            console.error('Error Kirim OTP:', error);
+            const errorMsg = error.response?.data?.message || 'Gagal menyambung ke server.';
             setMessage({ 
-                text: error.response?.data?.message || 'Gagal mengirim OTP. Coba lagi.', 
+                text: `Gagal: ${errorMsg}`, 
                 type: 'error' 
             });
         } finally {
