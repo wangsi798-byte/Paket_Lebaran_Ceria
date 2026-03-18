@@ -33,6 +33,12 @@ app.get('/health', (req, res) => {
 const connectDB = async () => {
     try {
         const dbUri = process.env.MONGODB_URI;
+        
+        if (!dbUri) {
+            console.error('CRITICAL: MONGODB_URI tidak ditemukan di environment variables!');
+            return;
+        }
+
         const connStr = dbUri.includes('?') 
             ? dbUri.replace('?', 'sipale?')
             : dbUri.endsWith('/')
