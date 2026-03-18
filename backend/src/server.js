@@ -30,34 +30,18 @@ app.get('/', (req, res) => {
 // Diagnostics & Health
 app.get('/api/ping', (req, res) => {
     res.json({ 
-        message: 'Pong from SIPALE Server v2.1', 
+        message: 'Pong from SIPALE Server v3.2', 
         timestamp: new Date(),
-        env: {
-            hasMongoUri: !!process.env.MONGODB_URI,
-            hasJwtSecret: !!process.env.JWT_SECRET,
-            nodeEnv: process.env.NODE_ENV
-        }
-    });
-});
-
-app.get('/api/ping-v3', (req, res) => {
-    res.json({ 
-        message: 'CRITICAL UPDATE: SIPALE Server v3.0 ACTIVE', 
-        timestamp: new Date(),
-        v: '3.0'
+        version: '3.2'
     });
 });
 
 app.get('/api/debug-db', async (req, res) => {
     try {
-        console.log('Manual connection attempt starting...');
         const dbUri = process.env.MONGODB_URI;
-        if (!dbUri) throw new Error('MONGODB_URI is missing in environment');
+        if (!dbUri) throw new Error('MONGODB_URI is missing');
         
-        // Use a persistent connection check instead of re-connecting every time
-        if (mongoose.connection.readyState !== 1) {
-            await connectDB();
-        }
+        const connectionDetails = await connectDB();
         
         const maskedUri = dbUri.replace(/\/\/.*:.*@/, '//***:***@').replace(/\w+\.mongodb\.net/, '***.mongodb.net');
         
@@ -67,15 +51,15 @@ app.get('/api/debug-db', async (req, res) => {
             dbName: mongoose.connection.name,
             hasUri: true,
             maskedUri: maskedUri,
-            connectedTo: mongoose.connection.host || 'unknown',
-            version: 'v2.1'
+            connectionStatus: connectionDetails.success ? 'OK' : 'FAILED',
+            lastError: connectionDetails.error || null,
+            version: 'v3.2'
         });
     } catch (err) {
         res.status(500).json({
             status: 'error',
-            message: 'Database diagnostic failed',
             error: err.message,
-            version: 'v2.1'
+            version: 'v3.2'
         });
     }
 });
