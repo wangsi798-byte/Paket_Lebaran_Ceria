@@ -45,10 +45,7 @@ const connectDB = async () => {
                 ? dbUri + 'sipale'
                 : dbUri + '/sipale';
 
-        await mongoose.connect(connStr, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        await mongoose.connect(connStr);
         console.log('Koneksi MongoDB berhasil ke database: sipale');
     } catch (error) {
         console.error('Koneksi MongoDB gagal:', error);

@@ -30,10 +30,11 @@ const Login = ({ onLoginSuccess }) => {
             console.error('Full Error Object:', error);
             const status = error.response?.status;
             const data = error.response?.data;
+            const backendError = data?.error || data?.details || '';
             const errorMsg = data?.message || error.message || 'Gagal menyambung ke server.';
             
             setMessage({ 
-                text: `Gagal (${status || 'Network'}): ${errorMsg}`, 
+                text: `Gagal (${status || 'Network'}): ${errorMsg}${backendError ? ' - ' + backendError : ''}`, 
                 type: 'error' 
             });
         } finally {
