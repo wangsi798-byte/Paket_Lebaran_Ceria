@@ -2,9 +2,11 @@ const winston = require('winston');
 const path = require('path');
 const fs = require('fs');
 
-// Pastikan direktori logs ada
+// Pastikan direktori logs ada hanya di development
 const logDir = path.join(__dirname, '..', '..', 'logs');
-fs.mkdirSync(logDir, { recursive: true });
+if (process.env.NODE_ENV !== 'production') {
+    fs.mkdirSync(logDir, { recursive: true });
+}
 
 // Konfigurasi Winston
 const logger = winston.createLogger({
@@ -42,16 +44,12 @@ const logger = winston.createLogger({
                 )
             })
         ],
-    exceptionHandlers: [
-        new winston.transports.File({ 
-            filename: path.join(logDir, 'exceptions.log') 
-        })
-    ],
-    rejectionHandlers: [
-        new winston.transports.File({ 
-            filename: path.join(logDir, 'rejections.log') 
-        })
-    ]
+    exceptionHandlers: process.env.NODE_ENV === 'production'
+        ? [new winston.transports.Console()]
+        : [new winston.transports.File({ filename: path.join(logDir, 'exceptions.log') })],
+    rejectionHandlers: process.env.NODE_ENV === 'production'
+        ? [new winston.transports.Console()]
+        : [new winston.transports.File({ filename: path.join(logDir, 'rejections.log') })]
 });
 
 module.exports = logger;
