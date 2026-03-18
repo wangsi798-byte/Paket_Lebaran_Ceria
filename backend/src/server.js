@@ -41,12 +41,23 @@ app.get('/api/ping', (req, res) => {
 });
 
 app.get('/api/debug-db', async (req, res) => {
-    res.json({
-        readyState: mongoose.connection.readyState,
-        stateName: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState],
-        dbName: mongoose.connection.name,
-        hasUri: !!process.env.MONGODB_URI
-    });
+    try {
+        await connectDB();
+        res.json({
+            readyState: mongoose.connection.readyState,
+            stateName: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState],
+            dbName: mongoose.connection.name,
+            hasUri: !!process.env.MONGODB_URI,
+            connectedTo: mongoose.connection.host
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Manual connection attempt failed',
+            error: err.message,
+            stack: err.stack
+        });
+    }
 });
 
 // Koneksi Database
@@ -70,6 +81,7 @@ const connectDB = async () => {
         console.log('Koneksi MongoDB berhasil ke database:', mongoose.connection.name);
     } catch (error) {
         console.error('Koneksi MongoDB gagal:', error);
+        throw error;
     }
 };
 
