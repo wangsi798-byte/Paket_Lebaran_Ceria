@@ -6,7 +6,9 @@
         "start": "node src/server.js",
         "dev": "nodemon src/server.js",
         "build": "echo 'No build step needed'",
-        "vercel-build": "echo 'Vercel build completed'"
+        "vercel-build": "echo 'Vercel build completed'",
+        "test": "echo 'No backend tests' && exit 0",
+        "lint": "echo 'No backend lint' && exit 0"
     },
     "dependencies": {
         "cors": "^2.8.5",
