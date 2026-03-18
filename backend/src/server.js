@@ -43,11 +43,15 @@ app.get('/api/ping', (req, res) => {
 app.get('/api/debug-db', async (req, res) => {
     try {
         await connectDB();
+        const dbUri = process.env.MONGODB_URI || 'MISSING';
+        const maskedUri = dbUri.replace(/\/\/.*:.*@/, '//***:***@').replace(/\w+\.mongodb\.net/, '***.mongodb.net');
+        
         res.json({
             readyState: mongoose.connection.readyState,
             stateName: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState],
             dbName: mongoose.connection.name,
             hasUri: !!process.env.MONGODB_URI,
+            maskedUri: maskedUri,
             connectedTo: mongoose.connection.host
         });
     } catch (err) {
