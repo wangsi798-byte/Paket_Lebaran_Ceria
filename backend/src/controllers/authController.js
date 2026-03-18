@@ -71,7 +71,8 @@ exports.kirimOTP = async (req, res) => {
         res.status(500).json({
             status: 'error',
             message: 'Gagal mengirim OTP',
-            error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : error.message
+            error: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
 };
