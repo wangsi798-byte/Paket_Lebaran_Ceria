@@ -68,21 +68,25 @@ app.get('/api/debug-db', async (req, res) => {
 const connectDB = async () => {
     try {
         const dbUri = process.env.MONGODB_URI;
-        if (!dbUri) return;
+        if (!dbUri) return { success: false, error: 'No URI' };
 
-        // Robust connection string building
+        // Force connection to SIPALE database
         let connStr = dbUri;
         if (!dbUri.includes('/sipale')) {
-            connStr = dbUri.includes('?') 
-                ? dbUri.replace('?', 'sipale?')
-                : dbUri.endsWith('/') ? dbUri + 'sipale' : dbUri + '/sipale';
+            if (dbUri.includes('?')) {
+                const parts = dbUri.split('?');
+                connStr = parts[0].endsWith('/') ? parts[0] + 'sipale?' + parts[1] : parts[0] + '/sipale?' + parts[1];
+            } else {
+                connStr = dbUri.endsWith('/') ? dbUri + 'sipale' : dbUri + '/sipale';
+            }
         }
 
-        await mongoose.connect(connStr);
+        await mongoose.connect(connStr, { serverSelectionTimeoutMS: 5000 });
         console.log('Koneksi MongoDB berhasil:', mongoose.connection.name);
+        return { success: true };
     } catch (error) {
         console.error('Koneksi MongoDB gagal:', error.message);
-        // Don't throw here to prevent serverless cold-start crash
+        return { success: false, error: error.message };
     }
 };
 
