@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 // Diagnostics & Health
 app.get('/api/ping', (req, res) => {
     res.json({ 
-        message: 'Pong from SIPALE Server', 
+        message: 'Pong from SIPALE Server v2.1', 
         timestamp: new Date(),
         env: {
             hasMongoUri: !!process.env.MONGODB_URI,
@@ -42,24 +42,32 @@ app.get('/api/ping', (req, res) => {
 
 app.get('/api/debug-db', async (req, res) => {
     try {
-        await connectDB();
-        const dbUri = process.env.MONGODB_URI || 'MISSING';
+        console.log('Manual connection attempt starting...');
+        const dbUri = process.env.MONGODB_URI;
+        if (!dbUri) throw new Error('MONGODB_URI is missing in environment');
+        
+        // Use a persistent connection check instead of re-connecting every time
+        if (mongoose.connection.readyState !== 1) {
+            await connectDB();
+        }
+        
         const maskedUri = dbUri.replace(/\/\/.*:.*@/, '//***:***@').replace(/\w+\.mongodb\.net/, '***.mongodb.net');
         
         res.json({
             readyState: mongoose.connection.readyState,
             stateName: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState],
             dbName: mongoose.connection.name,
-            hasUri: !!process.env.MONGODB_URI,
+            hasUri: true,
             maskedUri: maskedUri,
-            connectedTo: mongoose.connection.host
+            connectedTo: mongoose.connection.host || 'unknown',
+            version: 'v2.1'
         });
     } catch (err) {
         res.status(500).json({
             status: 'error',
-            message: 'Manual connection attempt failed',
+            message: 'Database diagnostic failed',
             error: err.message,
-            stack: err.stack
+            version: 'v2.1'
         });
     }
 });
@@ -68,10 +76,7 @@ app.get('/api/debug-db', async (req, res) => {
 const connectDB = async () => {
     try {
         const dbUri = process.env.MONGODB_URI;
-        if (!dbUri) {
-            console.error('CRITICAL: MONGODB_URI tidak ditemukan!');
-            return;
-        }
+        if (!dbUri) return;
 
         // Robust connection string building
         let connStr = dbUri;
@@ -82,10 +87,10 @@ const connectDB = async () => {
         }
 
         await mongoose.connect(connStr);
-        console.log('Koneksi MongoDB berhasil ke database:', mongoose.connection.name);
+        console.log('Koneksi MongoDB berhasil:', mongoose.connection.name);
     } catch (error) {
-        console.error('Koneksi MongoDB gagal:', error);
-        throw error;
+        console.error('Koneksi MongoDB gagal:', error.message);
+        // Don't throw here to prevent serverless cold-start crash
     }
 };
 
