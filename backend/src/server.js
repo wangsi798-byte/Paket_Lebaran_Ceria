@@ -40,6 +40,14 @@ app.get('/api/ping', (req, res) => {
     });
 });
 
+app.get('/api/ping-v3', (req, res) => {
+    res.json({ 
+        message: 'CRITICAL UPDATE: SIPALE Server v3.0 ACTIVE', 
+        timestamp: new Date(),
+        v: '3.0'
+    });
+});
+
 app.get('/api/debug-db', async (req, res) => {
     try {
         console.log('Manual connection attempt starting...');
