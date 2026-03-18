@@ -13,6 +13,16 @@ try {
         });
     });
 
+    app.get('/api/debug-db', async (req, res) => {
+        const mongoose = require('mongoose');
+        res.json({
+            readyState: mongoose.connection.readyState,
+            stateName: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState],
+            dbName: mongoose.connection.name,
+            hasUri: !!process.env.MONGODB_URI
+        });
+    });
+
     module.exports = app;
 } catch (error) {
     console.error('FAILED TO LOAD BACKEND:', error);

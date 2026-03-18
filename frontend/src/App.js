@@ -27,10 +27,13 @@ const Login = ({ onLoginSuccess }) => {
                 setMessage({ text: response.data.message || 'Gagal mengirim OTP.', type: 'error' });
             }
         } catch (error) {
-            console.error('Error Kirim OTP:', error);
-            const errorMsg = error.response?.data?.message || 'Gagal menyambung ke server.';
+            console.error('Full Error Object:', error);
+            const status = error.response?.status;
+            const data = error.response?.data;
+            const errorMsg = data?.message || error.message || 'Gagal menyambung ke server.';
+            
             setMessage({ 
-                text: `Gagal: ${errorMsg}`, 
+                text: `Gagal (${status || 'Network'}): ${errorMsg}`, 
                 type: 'error' 
             });
         } finally {
