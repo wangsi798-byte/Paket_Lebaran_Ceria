@@ -1,0 +1,12 @@
+#! kustomization.yaml
+# Generated code, do not edit
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - ../../base
+patches:
+    - path: backend-D:\GENERAL\Paket_Lebaran_Ceria-main\backend\uploads-persistentVolumeClaim.yaml
+    - path: backend-service.yaml
+    - path: frontend-service.yaml
+    - path: mongodb-mongodb_data-persistentVolumeClaim.yaml
+    - path: mongodb-service.yaml

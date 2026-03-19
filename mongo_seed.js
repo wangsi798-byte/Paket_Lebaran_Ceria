@@ -45,18 +45,6 @@ async function seedDatabase() {
                 periodeBerakhir: new Date('2027-03-01'),
                 frekuensiNabung: 'bulanan',
                 aktif: true
-            },
-            {
-                nama: 'User Test',
-                nomorHP: '082121856399',
-                role: 'peserta',
-                targetAkhirTabungan: 500000,
-                paketPilihan: 'uang_tunai',
-                nomorAnggota: 'PES' + (Date.now() + 3).toString().slice(-6),
-                periodeMulai: new Date('2026-03-01'),
-                periodeBerakhir: new Date('2027-03-01'),
-                frekuensiNabung: 'harian',
-                aktif: true
             }
         ];
 

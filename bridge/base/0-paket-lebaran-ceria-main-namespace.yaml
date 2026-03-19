@@ -1,0 +1,8 @@
+#! 0-paket-lebaran-ceria-main-namespace.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: paket-lebaran-ceria-main
+    labels:
+        com.docker.compose.project: paket_lebaran_ceria-main

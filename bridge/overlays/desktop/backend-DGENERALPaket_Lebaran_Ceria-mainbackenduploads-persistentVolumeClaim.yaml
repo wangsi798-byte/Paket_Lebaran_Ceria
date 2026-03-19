@@ -1,0 +1,9 @@
+#! backend-D:\GENERAL\Paket_Lebaran_Ceria-main\backend\uploads-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: backend-d--general-paket-lebaran-ceria-main-backend-uploads
+    namespace: paket-lebaran-ceria-main
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

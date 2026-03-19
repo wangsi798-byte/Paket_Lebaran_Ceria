@@ -1,0 +1,44 @@
+#! backend-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: backend
+    namespace: paket-lebaran-ceria-main
+    labels:
+        com.docker.compose.project: paket_lebaran_ceria-main
+        com.docker.compose.service: backend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: paket_lebaran_ceria-main
+            com.docker.compose.service: backend
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: paket_lebaran_ceria-main
+                com.docker.compose.service: backend
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: backend
+                  image: paket_lebaran_ceria-main-backend
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: JWT_SECRET
+                      value: "your_super_secret_key_here_change_in_production"
+                    - name: MONGODB_URI
+                      value: "mongodb://mongodb:27017/sipale"
+                  ports:
+                    - name: backend-5000
+                      containerPort: 5000
+                  volumeMounts:
+                    - name: app-uploads
+                      mountPath: /app/uploads
+            volumes:
+                - name: app-uploads
+                  hostPath:
+                    path: D:\GENERAL\Paket_Lebaran_Ceria-main\backend\uploads

@@ -82,7 +82,7 @@ function Login({ onLogin }) {
         try {
             const response = await axios.post(`${API_URL}/api/auth/verifikasi-otp`, { nomorHP, otp });
             const { token, user } = response.data.data;
-            onLogin(token, user.role);
+            onLogin(token, user);
         } catch (error) {
             const msg = error.response?.data?.message || 'OTP tidak valid atau sudah kadaluarsa';
             setPesan({ teks: msg, tipe: 'error' });
