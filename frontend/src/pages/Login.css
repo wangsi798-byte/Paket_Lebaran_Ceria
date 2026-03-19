@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ============================
+   PILAR LOGIN — TEMA LEBARAN
+   ============================*/
+:root {
+  --gold:       #C5A059;
+  --gold-light: #E8C17D;
+  --gold-dark:  #8B6E3F;
+  --cream-base: #FDFAF3;
+  --cream-soft: #F6EEDA;
+  --cream-glow: rgba(253,250,243,0.9);
+  --bronze:     #5C4033;
+  --text-main:  #2C1A06;
+  --text-sub:   #7A5C30;
+  --shadow-gold: 0 8px 30px rgba(197,160,89,0.15);
+  --shadow-premium: 0 32px 64px rgba(92,64,51,0.12), 0 8px 24px rgba(197,160,89,0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* BACKGROUND */
+.pilar-wrap {
+  min-height: 100vh;
+  background: radial-gradient(circle at top right, var(--cream-base) 0%, var(--cream-soft) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.bg-deco { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+/* MOSQUE SILHOUETTE */
+.mosque-bg {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1400px;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 1;
+  filter: sepia(40%) saturate(80%);
+  mask-image: linear-gradient(to top, black 30%, transparent 100%);
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.orb1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(232,193,125,0.25) 0%, transparent 70%);
+  top: -150px; right: -150px;
+}
+.orb2 {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, rgba(197,160,89,0.15) 0%, transparent 70%);
+  bottom: -100px; left: -100px;
+}
+
+/* DECORATIVE ASSETS */
+.float-asset {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 15px 30px rgba(92,64,51,0.15));
+}
+
+.ketupat-wrap {
+  top: 12%;
+  right: 18%;
+  width: 190px;
+  animation: floatKetupat 7s ease-in-out infinite;
+}
+
+.bedug-wrap {
+  bottom: 15%;
+  left: 12%;
+  width: 240px;
+  animation: floatBedug 9s ease-in-out infinite;
+}
+
+@keyframes floatKetupat {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-25px) rotate(4deg); }
+}
+
+@keyframes floatBedug {
+  0%, 100% { transform: translateY(0) scale(1) rotate(0); }
+  50% { transform: translateY(-18px) scale(1.03) rotate(2deg); }
+}
+
+/* CARD */
+.pilar-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(197, 160, 89, 0.25);
+  border-radius: 36px;
+  padding: 52px 44px 44px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-premium);
+  position: relative;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(35px);
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pilar-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-light), var(--gold), var(--gold-light), transparent);
+}
+
+.pilar-wrap.mounted .pilar-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* LOGO */
+.pilar-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.pilar-logo {
+  width: 84px; height: 84px;
+  background: white;
+  border: 1.5px solid var(--gold-light);
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(197,160,89,0.12);
+  margin-bottom: 6px;
+}
+.pilar-logo svg { width: 52px; height: 52px; }
+
+.pilar-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--bronze);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pilar-tagline {
+  font-size: 0.85rem;
+  color: var(--text-sub);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ORNAMEN DIVIDER */
+.ornamen-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 32px;
+}
+.div-line {
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(197,160,89,0.3), transparent);
+}
+.div-diamond {
+  width: 9px; height: 9px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px rgba(197,160,89,0.35);
+}
+
+/* ALERT */
+.pilar-alert {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 20px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+  animation: slideDown 0.5s ease;
+}
+.pilar-alert.error  { background: #FFF1F1; color: #C53030; border: 1px solid rgba(197,48,48,0.15); }
+.pilar-alert.success{ background: #F0FFF4; color: #276749; border: 1px solid rgba(39,103,73,0.15); }
+
+/* OTP DEBUG */
+.otp-debug-badge {
+  background: rgba(197,160,89,0.06);
+  border: 1px solid rgba(197,160,89,0.15);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 28px;
+}
+.debug-otp { font-size: 2.4rem; color: var(--gold-dark); letter-spacing: 0.35em; }
+
+/* FORM */
+.pilar-form { display: flex; flex-direction: column; gap: 24px; }
+.form-group label {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  letter-spacing: 0.12em;
+}
+
+.input-wrap input {
+  padding: 16px 18px 16px 52px;
+  background: white;
+  border: 1.5px solid rgba(197,160,89,0.2);
+  border-radius: 16px;
+  color: var(--text-main);
+  font-size: 1.05rem;
+}
+.input-wrap input:focus {
+  border-color: var(--gold);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(197,160,89,0.08);
+}
+.input-icon { left: 20px; color: var(--gold-dark); }
+
+/* OTP BOXES */
+.otp-boxes { gap: 14px; }
+.otp-box {
+  background: white;
+  border-color: rgba(197,160,89,0.25);
+  color: var(--bronze);
+  width: 54px; height: 68px;
+}
+.otp-box:focus { border-color: var(--gold); background: #FFFEFA; }
+.otp-box.filled { border-color: var(--gold-dark); background: rgba(197,160,89,0.04); }
+
+/* BUTTON */
+.pilar-btn {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: white;
+  font-weight: 700;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(197,160,89,0.25);
+}
+.pilar-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+  box-shadow: 0 12px 35px rgba(197,160,89,0.35);
+}
+
+.pilar-btn-ghost {
+  border-color: rgba(197,160,89,0.3);
+  color: var(--text-sub);
+}
+
+.pilar-footer { color: var(--text-sub); margin-top: 36px; }
+.pilar-footer strong { color: var(--gold-dark); }
+
+@keyframes slideDown {
+  from { opacity:0; transform: translateY(-12px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* RESPONSIF */
+@media (max-width: 768px) {
+  .ketupat-wrap { width: 140px; right: 5%; top: 8%; }
+  .bedug-wrap { width: 170px; left: 5%; bottom: 8%; }
+}
+@media (max-width: 480px) {
+  .pilar-card { padding: 40px 24px 32px; }
+  .otp-box { width: 44px; height: 56px; gap: 8px; }
+  .ketupat-wrap, .bedug-wrap { display: none; }
+}
