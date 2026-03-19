@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const authRoutes = require('./src/routes/auth.routes');
 
 const app = express();
 
@@ -10,15 +11,6 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-app.post('/api/auth/login-owner', (req, res) => {
-  const { username, password } = req.body;
-  
-  // Contoh sederhana validasi
-  if (username === 'admin' && password === 'paketlebaran2024') {
-    res.json({ success: true, token: 'dummy_token_123' });
-  } else {
-    res.status(401).json({ success: false, message: 'Invalid credentials' });
-  }
-});
+app.use('/api/auth', authRoutes);
 
 module.exports = app;
