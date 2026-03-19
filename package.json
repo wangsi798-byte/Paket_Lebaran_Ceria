@@ -1,23 +1,29 @@
 {
   "name": "paket-lebaran-ceria",
   "version": "1.0.0",
+  "private": true,
   "main": "backend/server.js",
   "scripts": {
     "preinstall": "npx clear-npx-cache",
     "start": "node backend/server.js",
-    "build": "echo 'Build completed'"
+    "build": "echo 'Build successful'",
+    "prepare": "npm config set registry https://registry.npmjs.org/"
   },
   "engines": {
-    "node": "24.x"
+    "node": "20.x",
+    "npm": "10.x"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "npm:bcryptjs@latest",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2"
   },
   "devDependencies": {
     "npm-force-resolutions": "0.0.10"
+  },
+  "overrides": {
+    "bcryptjs": "^2.4.3"
   },
   "resolutions": {
     "bcryptjs": "^2.4.3"

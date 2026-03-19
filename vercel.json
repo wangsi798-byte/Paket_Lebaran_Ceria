@@ -1,11 +1,18 @@
 {
   "version": 2,
-  "buildCommand": "npm ci",
-  "installCommand": "npm ci",
+  "buildCommand": "npm ci --verbose",
+  "installCommand": "npm ci --verbose",
   "builds": [
     {
       "src": "backend/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "backend/**",
+          "package.json",
+          ".npmrc"
+        ]
+      }
     }
   ],
   "routes": [
@@ -13,5 +20,9 @@
       "src": "/api/(.*)",
       "dest": "backend/server.js"
     }
-  ]
+  ],
+  "env": {
+    "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org/",
+    "NODE_OPTIONS": "--max_old_space_size=4096"
+  }
 }
