@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "npm install && npm run build",
+  "installCommand": "npm install",
   "builds": [
     {
       "src": "backend/server.js",
@@ -18,7 +20,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://paket-lebaran-ceria.vercel.app"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
