@@ -3,6 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+// Routes
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const paketRoutes = require('./routes/paketRoutes');
+const setoranRoutes = require('./routes/setoranRoutes');
+const distribusiRoutes = require('./routes/distribusiRoutes');
+
 // Muat environment variables
 dotenv.config();
 
@@ -28,6 +35,13 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString()
     });
 });
+
+// Mount API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/paket', paketRoutes);
+app.use('/api/setoran', setoranRoutes);
+app.use('/api/distribusi', distribusiRoutes);
 
 // Koneksi Database
 const connectDB = async () => {

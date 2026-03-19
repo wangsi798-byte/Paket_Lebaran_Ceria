@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const logger = require('../utils/logger');
 
 // Generate OTP yang lebih aman
@@ -152,6 +153,76 @@ exports.verifikasiOTP = async (req, res) => {
             nomorHP: req.body.nomorHP 
         });
         
+        res.status(500).json({
+            status: 'error',
+            message: 'Gagal login',
+            error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : error.message
+        });
+    }
+};
+
+// Login Owner (username & password) - diprioritaskan untuk awal penggunaan
+exports.loginOwner = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Username dan password harus diisi'
+            });
+        }
+
+        // Owner disimpan sebagai user role 'admin' dengan username+passwordHash
+        const user = await User.findOne({ username, role: 'admin' });
+
+        if (!user || !user.passwordHash) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Username atau password salah'
+            });
+        }
+
+        const ok = await bcrypt.compare(password, user.passwordHash);
+        if (!ok) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Username atau password salah'
+            });
+        }
+
+        const token = jwt.sign(
+            {
+                id: user._id,
+                role: user.role,
+                exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)
+            },
+            process.env.JWT_SECRET
+        );
+
+        logger.info(`Login owner berhasil`, { userId: user._id, username });
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Login berhasil',
+            data: {
+                token,
+                user: {
+                    id: user._id,
+                    nama: user.nama,
+                    role: user.role,
+                    nomorAnggota: user.nomorAnggota,
+                    nomorHP: user.nomorHP
+                }
+            }
+        });
+    } catch (error) {
+        logger.error(`Error login owner`, {
+            error: error.message,
+            stack: error.stack,
+            username: req.body?.username
+        });
+
         res.status(500).json({
             status: 'error',
             message: 'Gagal login',

@@ -6,6 +6,16 @@ const UserSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    username: {
+        type: String,
+        unique: true,
+        sparse: true,
+        trim: true
+    },
+    passwordHash: {
+        type: String,
+        default: null
+    },
     nomorHP: {
         type: String,
         required: true,
@@ -69,7 +79,8 @@ const UserSchema = new mongoose.Schema({
     timestamps: true,
     indexes: [
         { fields: { nomorHP: 1 }, unique: true, sparse: true },
-        { fields: { nomorAnggota: 1 }, unique: true }
+        { fields: { nomorAnggota: 1 }, unique: true },
+        { fields: { username: 1 }, unique: true, sparse: true }
     ]
 });
 

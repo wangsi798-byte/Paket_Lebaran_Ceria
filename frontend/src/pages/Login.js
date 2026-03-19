@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Login.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// REACT_APP_API_URL bisa berisi base URL seperti:
+// - http://localhost:5001
+// - https://example.com
+// - https://example.com/api  (kadang sudah menyertakan /api)
+// Normalisasi agar tidak terjadi double `/api/api/...`
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+const API_ROOT = API_BASE.replace(/\/api\/?$/, '');
 
 function OTPInput({ value, onChange, disabled }) {
     const digits = value.padEnd(6, ' ').split('');
@@ -48,6 +54,7 @@ function OTPInput({ value, onChange, disabled }) {
 }
 
 function Login({ onLogin }) {
+    const [mode, setMode] = useState('owner'); // owner | otp
     const [nomorHP, setNomorHP] = useState('');
     const [otp, setOtp] = useState('');
     const [tahap, setTahap] = useState('kirim');
@@ -55,6 +62,8 @@ function Login({ onLogin }) {
     const [otpDebug, setOtpDebug] = useState('');
     const [loading, setLoading] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     useEffect(() => { setTimeout(() => setMounted(true), 50); }, []);
 
@@ -63,7 +72,7 @@ function Login({ onLogin }) {
         setLoading(true);
         setPesan({ teks: '', tipe: '' });
         try {
-            const response = await axios.post(`${API_URL}/api/auth/kirim-otp`, { nomorHP });
+            const response = await axios.post(`${API_ROOT}/api/auth/kirim-otp`, { nomorHP });
             setPesan({ teks: response.data.message, tipe: 'success' });
             if (response.data.debug?.otp) setOtpDebug(response.data.debug.otp);
             setTahap('verifikasi');
@@ -80,11 +89,27 @@ function Login({ onLogin }) {
         setLoading(true);
         setPesan({ teks: '', tipe: '' });
         try {
-            const response = await axios.post(`${API_URL}/api/auth/verifikasi-otp`, { nomorHP, otp });
+            const response = await axios.post(`${API_ROOT}/api/auth/verifikasi-otp`, { nomorHP, otp });
             const { token, user } = response.data.data;
             onLogin(token, user);
         } catch (error) {
             const msg = error.response?.data?.message || 'OTP tidak valid atau sudah kadaluarsa';
+            setPesan({ teks: msg, tipe: 'error' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loginOwner = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setPesan({ teks: '', tipe: '' });
+        try {
+            const response = await axios.post(`${API_ROOT}/api/auth/login-owner`, { username, password });
+            const { token, user } = response.data.data;
+            onLogin(token, user);
+        } catch (error) {
+            const msg = error.response?.data?.message || 'Gagal login. Pastikan server berjalan.';
             setPesan({ teks: msg, tipe: 'error' });
         } finally {
             setLoading(false);
@@ -137,6 +162,23 @@ function Login({ onLogin }) {
                     <span className="div-line"/>
                 </div>
 
+                <div className="auth-toggle" role="tablist" aria-label="Metode login">
+                    <button
+                        type="button"
+                        className={`auth-tab ${mode === 'owner' ? 'active' : ''}`}
+                        onClick={() => { setMode('owner'); setPesan({ teks: '', tipe: '' }); setLoading(false); }}
+                    >
+                        Owner
+                    </button>
+                    <button
+                        type="button"
+                        className={`auth-tab ${mode === 'otp' ? 'active' : ''}`}
+                        onClick={() => { setMode('otp'); setPesan({ teks: '', tipe: '' }); setLoading(false); }}
+                    >
+                        OTP
+                    </button>
+                </div>
+
                 {pesan.teks && (
                     <div className={`pilar-alert ${pesan.tipe}`}>
                         <span className="alert-icon">{pesan.tipe === 'error' ? '✕' : '✓'}</span>
@@ -144,7 +186,7 @@ function Login({ onLogin }) {
                     </div>
                 )}
 
-                {otpDebug && (
+                {mode === 'otp' && otpDebug && (
                     <div className="otp-debug-badge">
                         <span className="debug-label">🔑 Kode OTP Anda</span>
                         <span className="debug-otp">{otpDebug}</span>
@@ -152,7 +194,58 @@ function Login({ onLogin }) {
                 )}
 
                 <div className="pilar-form-wrap">
-                    {tahap === 'kirim' ? (
+                    {mode === 'owner' ? (
+                        <form onSubmit={loginOwner} className="pilar-form">
+                            <div className="form-group">
+                                <label>Username</label>
+                                <div className="input-wrap">
+                                    <span className="input-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                    </span>
+                                    <input
+                                        type="text"
+                                        placeholder="owner"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        autoComplete="username"
+                                        required
+                                        disabled={loading}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Password</label>
+                                <div className="input-wrap">
+                                    <span className="input-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                            <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                        </svg>
+                                    </span>
+                                    <input
+                                        type="password"
+                                        placeholder="••••••••"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        autoComplete="current-password"
+                                        required
+                                        disabled={loading}
+                                    />
+                                </div>
+                            </div>
+
+                            <button type="submit" className="pilar-btn" disabled={loading}>
+                                {loading
+                                    ? <span className="btn-loading"><span className="spinner"/><span>Memverifikasi...</span></span>
+                                    : <><span>Masuk Owner</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M9 18l6-6-6-6"/></svg></>
+                                }
+                            </button>
+                        </form>
+                    ) : tahap === 'kirim' ? (
                         <form onSubmit={kirimOTP} className="pilar-form">
                             <div className="form-group">
                                 <label>Nomor Handphone</label>

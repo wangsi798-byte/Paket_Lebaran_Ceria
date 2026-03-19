@@ -11,6 +11,9 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.post('/kirim-otp', authController.kirimOTP);
 router.post('/verifikasi-otp', authController.verifikasiOTP);
 
+// Rute Owner (username/password)
+router.post('/login-owner', authController.loginOwner);
+
 // Rute Profil
 router.get('/profil', authMiddleware, authController.profilPengguna);
 
