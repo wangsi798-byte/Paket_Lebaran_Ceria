@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "npm install",
+  "installCommand": "npm install",
   "builds": [
     {
       "src": "backend/server.js",
@@ -10,25 +12,6 @@
     {
       "src": "/api/auth/(.*)",
       "dest": "backend/server.js"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/auth/login-owner",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://paket-lebaran-ceria.vercel.app"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
-        }
-      ]
     }
   ]
 }
