@@ -2,19 +2,21 @@
 
 /* ============================
    PILAR LOGIN — TEMA LEBARAN
+   MODERN MINIMAL ELEGANT
    ============================*/
 :root {
-  --gold:       #C5A059;
-  --gold-light: #E8C17D;
-  --gold-dark:  #8B6E3F;
-  --cream-base: #FDFAF3;
-  --cream-soft: #F6EEDA;
-  --cream-glow: rgba(253,250,243,0.9);
-  --bronze:     #5C4033;
-  --text-main:  #2C1A06;
-  --text-sub:   #7A5C30;
-  --shadow-gold: 0 8px 30px rgba(197,160,89,0.15);
-  --shadow-premium: 0 32px 64px rgba(92,64,51,0.12), 0 8px 24px rgba(197,160,89,0.1);
+  --gold:         #C5A059;
+  --gold-light:   #E8C17D;
+  --gold-dark:    #8B6E3F;
+  --cream-base:   #F8F5EE;
+  --cream-soft:   #F2EADC;
+  --cream-glow:   rgba(250,247,238,0.9);
+  --bronze:       #4A3627;
+  --text-main:    #2A2117;
+  --text-sub:     #7A5C30;
+  --border-soft:  rgba(197,160,89,0.18);
+  --shadow-soft:  0 18px 45px rgba(26, 22, 15, 0.10);
+  --shadow-soft-lg: 0 32px 70px rgba(26, 22, 15, 0.16);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,7 +24,10 @@
 /* BACKGROUND */
 .pilar-wrap {
   min-height: 100vh;
-  background: radial-gradient(circle at top right, var(--cream-base) 0%, var(--cream-soft) 100%);
+  background:
+    radial-gradient(circle at 10% 0, rgba(255,255,255,0.9) 0%, transparent 55%),
+    radial-gradient(circle at 100% 0, rgba(245,232,205,0.8) 0%, transparent 55%),
+    linear-gradient(135deg, var(--cream-base), var(--cream-soft));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,12 +42,12 @@
 /* MOSQUE SILHOUETTE */
 .mosque-bg {
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 1400px;
-  opacity: 0.12;
+  width: 120%;
+  max-width: 1500px;
+  opacity: 0.08;
   pointer-events: none;
   z-index: 1;
   filter: sepia(40%) saturate(80%);
@@ -75,17 +80,19 @@
 }
 
 .ketupat-wrap {
-  top: 12%;
-  right: 18%;
-  width: 190px;
-  animation: floatKetupat 7s ease-in-out infinite;
+  top: 10%;
+  right: 12%;
+  width: 150px;
+  opacity: 0.75;
+  animation: floatKetupat 10s ease-in-out infinite;
 }
 
 .bedug-wrap {
-  bottom: 15%;
-  left: 12%;
-  width: 240px;
-  animation: floatBedug 9s ease-in-out infinite;
+  bottom: 14%;
+  left: 10%;
+  width: 200px;
+  opacity: 0.7;
+  animation: floatBedug 12s ease-in-out infinite;
 }
 
 @keyframes floatKetupat {
@@ -100,15 +107,15 @@
 
 /* CARD */
 .pilar-card {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1px solid rgba(197, 160, 89, 0.25);
-  border-radius: 36px;
-  padding: 52px 44px 44px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-soft);
+  border-radius: 32px;
+  padding: 44px 40px 38px;
   width: 100%;
   max-width: 440px;
-  box-shadow: var(--shadow-premium);
+  box-shadow: var(--shadow-soft);
   position: relative;
   z-index: 10;
   opacity: 0;
@@ -120,7 +127,7 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 3px;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold-light), var(--gold), var(--gold-light), transparent);
 }
 
@@ -138,10 +145,10 @@
   margin-bottom: 28px;
 }
 .pilar-logo {
-  width: 84px; height: 84px;
+  width: 78px; height: 78px;
   background: white;
-  border: 1.5px solid var(--gold-light);
-  border-radius: 26px;
+  border: 1px solid var(--gold-light);
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +159,7 @@
 
 .pilar-brand {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   font-weight: 700;
   color: var(--bronze);
   letter-spacing: 0.08em;
@@ -210,7 +217,7 @@
 .debug-otp { font-size: 2.4rem; color: var(--gold-dark); letter-spacing: 0.35em; }
 
 /* FORM */
-.pilar-form { display: flex; flex-direction: column; gap: 24px; }
+.pilar-form { display: flex; flex-direction: column; gap: 22px; }
 .form-group label {
   font-size: 0.8rem;
   color: var(--text-sub);
@@ -218,10 +225,10 @@
 }
 
 .input-wrap input {
-  padding: 16px 18px 16px 52px;
-  background: white;
-  border: 1.5px solid rgba(197,160,89,0.2);
-  border-radius: 16px;
+  padding: 14px 18px 14px 52px;
+  background: #FCFBF8;
+  border: 1.5px solid rgba(197,160,89,0.18);
+  border-radius: 14px;
   color: var(--text-main);
   font-size: 1.05rem;
 }
@@ -233,10 +240,10 @@
 .input-icon { left: 20px; color: var(--gold-dark); }
 
 /* OTP BOXES */
-.otp-boxes { gap: 14px; }
+.otp-boxes { gap: 12px; }
 .otp-box {
-  background: white;
-  border-color: rgba(197,160,89,0.25);
+  background: #FCFBF8;
+  border-color: rgba(197,160,89,0.22);
   color: var(--bronze);
   width: 54px; height: 68px;
 }
@@ -248,9 +255,9 @@
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
   color: white;
   font-weight: 700;
-  padding: 18px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(197,160,89,0.25);
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(197,160,89,0.22);
 }
 .pilar-btn:hover:not(:disabled) {
   background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
